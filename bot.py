@@ -13,12 +13,12 @@ from telegram.update import Update
 
 from descriptions import PersonDescription
 from optimization import scalar_optimize
-from transformer import Transformer
 from perfect_vacancy import (
     all_vacancies_descriptions,
     get_skill_difference,
     person_description,
 )
+from transformer import Transformer
 
 
 users = defaultdict()

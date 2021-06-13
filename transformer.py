@@ -1,6 +1,7 @@
 from descriptions import PersonDescription, VacancyDescription
-import numpy as np
 from typing import List
+
+from numpy import array
 
 
 class Transformer:
@@ -15,8 +16,8 @@ class Transformer:
                 vector_of_ratings.append(vacancy.skills[key])
             common_vector = vector_of_ratings.copy()
             common_vector.append(salary)
-            common_vector = np.array(common_vector)
-            vector_of_ratings = np.array(vector_of_ratings)
+            common_vector = array(common_vector)
+            vector_of_ratings = array(vector_of_ratings)
             vector_of_vacancies.append(
                 VacancyDescription(
                     id=current_id,
@@ -38,8 +39,8 @@ class Transformer:
             vector_of_ratings.append(person.skills[key])
         common_vector = vector_of_ratings.copy()
         common_vector.append(salary)
-        common_vector = np.array(common_vector)
-        vector_of_ratings = np.array(vector_of_ratings)
+        common_vector = array(common_vector)
+        vector_of_ratings = array(vector_of_ratings)
         person_vector = PersonDescription(
             ratings=vector_of_ratings,
             salary=salary,

@@ -1,6 +1,7 @@
 from descriptions import VacancyDescription
 from typing import List
-import numpy as np
+
+from numpy import random
 
 sample_links_of_vacancies = [
     'https://hh.ru/vacancy/45409422',
@@ -22,14 +23,14 @@ class Generator:
             vacancy = VacancyDescription(
                 id=i,
                 name='Python разработчик',
-                link=np.random.choice(sample_links_of_vacancies, size=1)[0],
-                salary=np.random.randint(50000, 100000),
+                link=random.choice(sample_links_of_vacancies, size=1)[0],
+                salary=random.randint(50000, 100000),
                 skills={
-                    'python': np.random.randint(1, 5),
-                    'sql': np.random.randint(1, 5),
-                    'tests': np.random.randint(1, 5),
-                    'web': np.random.randint(1, 5),
-                    'teamwork': np.random.randint(1, 5),
+                    'python': random.randint(1, 5),
+                    'sql': random.randint(1, 5),
+                    'tests': random.randint(1, 5),
+                    'web': random.randint(1, 5),
+                    'teamwork': random.randint(1, 5),
                 }
             )
             self.list_of_vacancies.append(vacancy)
