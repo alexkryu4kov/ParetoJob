@@ -34,6 +34,39 @@ def rules(update: Update, context: CallbackContext):
     update.message.reply_text(answer)
 
 
+def choose_perfect_skills(update: Update, context: CallbackContext):
+    if update.message in ('Python', 'SQL', 'Web'):
+        context.bot.sendMessage(
+            chat_id=update.message.chat_id,
+            text=f'Отличный выбор {update.message}',
+        )
+    kbd_layout = [['Python'], ['SQL'], ['Web'], ['Перейти к выбору навыков, которые хочется подтянуть']]
+    kbd = ReplyKeyboardMarkup(kbd_layout)
+    update.message.reply_text(text="Выбери навыки, в которых ты уверен", reply_markup=kbd)
+
+
+def choose_middle_skills(update: Update, context: CallbackContext):
+    if update.message in ('Python', 'SQL', 'Web'):
+        context.bot.sendMessage(
+            chat_id=update.message.chat_id,
+            text=f'Отличный выбор {update.message}',
+        )
+    kbd_layout = [['Python'], ['SQL'], ['Web'], ['Перейти к выбору навыков, которые хочется изучить']]
+    kbd = ReplyKeyboardMarkup(kbd_layout)
+    update.message.reply_text(text="Выбери навыки, которые хочется подтянуть", reply_markup=kbd)
+
+
+def choose_weak_skills(update: Update, context: CallbackContext):
+    if update.message in ('Python', 'SQL', 'Web'):
+        context.bot.sendMessage(
+            chat_id=update.message.chat_id,
+            text=f'Отличный выбор {update.message}',
+        )
+    kbd_layout = [['Python'], ['SQL'], ['Web'], ['Перейти к рекомендациям']]
+    kbd = ReplyKeyboardMarkup(kbd_layout)
+    update.message.reply_text(text="Выбери навыки, которые хочется изучить", reply_markup=kbd)
+
+
 def make_recommendation(update: Update, context: CallbackContext):
     reply_markup = ReplyKeyboardRemove()
     perfect_vacancy = get_perfect_vacancy(person_description, all_vacancies_descriptions)
@@ -47,8 +80,20 @@ def make_recommendation(update: Update, context: CallbackContext):
 
 dispatcher.add_handler(CommandHandler('start', start))
 dispatcher.add_handler(MessageHandler(
-    Filters.regex('^(Python разработчик|Таргетолог|UI/UX designer)$'),
+    Filters.regex('^(Python разработчик|Таргетолог|UI/UX designer|Python|SQL|Web)$'),
+    choose_perfect_skills,
+))
+dispatcher.add_handler(MessageHandler(
+    Filters.regex('^Перейти к выбору навыков, которые хочется подтянуть$'),
+    choose_middle_skills,
+))
+dispatcher.add_handler(MessageHandler(
+    Filters.regex('^Перейти к выбору навыков, которые хочется изучить$'),
+    choose_weak_skills,
+))
+dispatcher.add_handler(MessageHandler(
+    Filters.regex('^Перейти к рекомендациям$'),
     make_recommendation,
 ))
-dispatcher.add_handler(MessageHandler(None, rules))
+dispatcher.add_handler(MessageHandler(None, start))
 updater.start_polling()
