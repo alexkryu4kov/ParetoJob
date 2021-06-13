@@ -1,19 +1,11 @@
-from dataclasses import dataclass
+from Descriptions import VacancyDescription, PersonDescription
 from typing import List, Tuple
+from synthetic_generator import Generator
+from optimization import scalar_optimize
+from Transformer import Transformer
 
-
-@dataclass
-class Description:
-    name: str
-    salary: int
-    link: str
-    skills: dict
-
-
-person_description = Description(
-    name='Python разработчик',
+person_description = PersonDescription(
     salary=60_000,
-    link='https://hh.ru/vacancy/41959154',
     skills={
         'python': 3,
         'sql': 2,
@@ -24,7 +16,8 @@ person_description = Description(
 )
 
 all_vacancies_descriptions = [
-    Description(
+    VacancyDescription(
+        id=1,
         name='Python разработчик',
         salary=80_000,
         link='https://hh.ru/vacancy/41959154',
@@ -36,7 +29,8 @@ all_vacancies_descriptions = [
             'teamwork': 4,
         }
     ),
-    Description(
+    VacancyDescription(
+        id=2,
         name='Python разработчик',
         salary=100_000,
         link='https://hh.ru/vacancy/41959154',
@@ -48,7 +42,8 @@ all_vacancies_descriptions = [
             'teamwork': 5,
         }
     ),
-    Description(
+    VacancyDescription(
+        id=3,
         name='Python разработчик',
         salary=110_000,
         link='https://hh.ru/vacancy/41959154',
@@ -61,22 +56,15 @@ all_vacancies_descriptions = [
         }
     ),
 ]
+# генерирует 5 синтетических вакансий
+Generator(all_vacancies_descriptions, 5).generate()
 
+transformer = Transformer()
 
-def get_perfect_vacancy(person: Description, all_vacancies: List[Description]) -> Description:
-    """Возвращает оптимальную вакансию.
+person_vector = transformer.person_to_vector(person_description)['vector']
 
-    Вакансия выбирается из списка all_vacations, и должна соответствовать двум критериям:
-    * максимальная разница в salary с person
-    * минимальная разница в скиллах с person
-    """
+vacancies_vectors = transformer.vacancy_to_vector(all_vacancies_descriptions)
 
-    return all_vacancies[-1]
+best_vacancy = scalar_optimize(vacancies_vectors, person_vector)
 
-
-def get_skill_difference(person: Description, perfect_vacancy: Description) -> Tuple[str, int]:
-    difference = {}
-    for key, elem in person.skills.items():
-        difference[key] = perfect_vacancy.skills[key] - elem
-    max_difference = max(difference, key=difference.get)
-    return max_difference, difference[max_difference]
+print(best_vacancy)
