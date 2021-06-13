@@ -1,24 +1,19 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Tuple
 
 
 @dataclass
 class Description:
+    name: str
     salary: int
+    link: str
     skills: dict
 
 
-def get_perfect_vacancy(person: Description, all_vacancies: List[Description]) -> Description:
-    """Возвращает оптимальную вакансию.
-
-    Вакансия выбирается из списка all_vacations, и должна соответствовать двум критериям:
-    * максимальная разница в salary с person
-    * минимальная разница в скиллах с person
-    """
-
-
 person_description = Description(
+    name='Python разработчик',
     salary=60_000,
+    link='https://hh.ru/vacancy/44856473',
     skills={
         'python': 3,
         'sql': 2,
@@ -30,7 +25,9 @@ person_description = Description(
 
 all_vacancies_descriptions = [
     Description(
+        name='Python разработчик',
         salary=80_000,
+        link='https://hh.ru/vacancy/44856473',
         skills={
             'python': 3,
             'sql': 2,
@@ -40,7 +37,9 @@ all_vacancies_descriptions = [
         }
     ),
     Description(
+        name='Python разработчик',
         salary=100_000,
+        link='https://hh.ru/vacancy/44856473',
         skills={
             'python': 4,
             'sql': 2,
@@ -50,7 +49,9 @@ all_vacancies_descriptions = [
         }
     ),
     Description(
+        name='Python разработчик',
         salary=110_000,
+        link='https://hh.ru/vacancy/44856473',
         skills={
             'python': 5,
             'sql': 5,
@@ -62,9 +63,20 @@ all_vacancies_descriptions = [
 ]
 
 
-perfect_vacancy = get_perfect_vacancy(
-    person=person_description,
-    all_vacancies=all_vacancies_descriptions,
-)
+def get_perfect_vacancy(person: Description, all_vacancies: List[Description]) -> Description:
+    """Возвращает оптимальную вакансию.
 
-# в переменной vacancy должна содержаться вакансия, которая будет предложена пользователю
+    Вакансия выбирается из списка all_vacations, и должна соответствовать двум критериям:
+    * максимальная разница в salary с person
+    * минимальная разница в скиллах с person
+    """
+
+    return all_vacancies[0]
+
+
+def get_skill_difference(person: Description, perfect_vacancy: Description) -> Tuple[str, int]:
+    difference = {}
+    for key, elem in person.skills.items():
+        difference[key] = elem - perfect_vacancy.skills[key]
+    max_difference = max(difference, key=difference.get)
+    return max_difference, difference[max_difference]
