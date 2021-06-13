@@ -4,6 +4,21 @@ from dataclasses import dataclass, field
 from numpy import ndarray
 
 
+skills = frozenset((
+    'Python',
+    'SQL',
+    'Web',
+    'CI/CD',
+    'Golang',
+    'Tests',
+    'Teamwork',
+    'Docker',
+    'Asyncio',
+))
+
+default_skills = defaultdict(int, {k: 0 for k in skills})
+
+
 @dataclass
 class BaseDescription:
     salary: int = 0
