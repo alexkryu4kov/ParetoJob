@@ -39,8 +39,6 @@ class Transformer:
             vector_of_ratings.append(person.skills[key])
         common_vector = vector_of_ratings.copy()
         common_vector.append(salary)
-        common_vector = array(common_vector)
-        vector_of_ratings = array(vector_of_ratings)
         person_vector = PersonDescription(
             ratings=vector_of_ratings,
             salary=salary,
