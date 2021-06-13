@@ -1,10 +1,14 @@
-from Descriptions import VacancyDescription
+from descriptions import VacancyDescription
 from typing import List
 import numpy as np
 
-sample_links_of_vacancies = ['https://hh.ru/vacancy/45409422', 'https://hh.ru/vacancy/40612238',
-                             'https://hh.ru/vacancy/45375879', 'https://hh.ru/vacancy/45415115',
-                             'https://hh.ru/vacancy/43949678']
+sample_links_of_vacancies = [
+    'https://hh.ru/vacancy/45409422',
+    'https://hh.ru/vacancy/40612238',
+    'https://hh.ru/vacancy/45375879',
+    'https://hh.ru/vacancy/45415115',
+    'https://hh.ru/vacancy/43949678',
+]
 
 
 class Generator:

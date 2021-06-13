@@ -1,4 +1,9 @@
+from typing import List
+
+import numpy
 import numpy as np
+
+from descriptions import VacancyDescription
 
 
 def sigmoid(z, bias):
@@ -12,13 +17,11 @@ def optimizing_function(salary: int, rating: int):
         return -1000
 
 
-def scalar_optimize(vacancies_info, person_vector):
+def scalar_optimize(vacancies_info: List[VacancyDescription], person_vector: numpy.ndarray):
     best_metric = -100
-    best_vacancy = []
-    k = 1
+    best_vacancy = {}
     for vacancy in vacancies_info:
-        vector = vacancy['vector']
-        current_id = vacancy['id']
+        vector = vacancy.vector
         difference_vector = vector - person_vector
         sum_ratings = sum(difference_vector[:-1])
         salary_difference = difference_vector[-1]
@@ -26,6 +29,4 @@ def scalar_optimize(vacancies_info, person_vector):
         if current_metric > best_metric:
             best_metric = current_metric
             best_vacancy = vacancy
-
-        k += 1
     return best_vacancy

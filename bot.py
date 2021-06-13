@@ -11,9 +11,9 @@ from telegram.replykeyboardmarkup import ReplyKeyboardMarkup
 from telegram.replykeyboardremove import ReplyKeyboardRemove
 from telegram.update import Update
 
-from Descriptions import PersonDescription
+from descriptions import PersonDescription
 from optimization import scalar_optimize
-from Transformer import Transformer
+from transformer import Transformer
 from perfect_vacancy import (
     all_vacancies_descriptions,
     get_skill_difference,
@@ -119,13 +119,13 @@ def choose_weak_skills(update: Update, context: CallbackContext):
 def make_recommendation(update: Update, context: CallbackContext):
     kbd_layout = [['А как мне его подтянуть']]
     kbd = ReplyKeyboardMarkup(kbd_layout, resize_keyboard=True)
-    person_vector = transformer.person_to_vector(person_description)['vector']
+    person_vector = transformer.person_to_vector(person_description).vector
     vacancies_vectors = transformer.vacancy_to_vector(all_vacancies_descriptions)
     best_vacancy = scalar_optimize(vacancies_vectors, person_vector)
     worst_skill, skill_difference = get_skill_difference(person_description, best_vacancy)
     answer = f'Моя рекомендация готова!\n\n' \
-             f'Вакансия для тебя: {best_vacancy["name"]} {best_vacancy["link"]}\n' \
-             f'Прирост в зарплате составит примерно {round((best_vacancy["salary"] - person_description.salary)/person_description.salary, 2) * 100}% от текущей зарплаты\n' \
+             f'Вакансия для тебя: {best_vacancy.name} {best_vacancy.link}\n' \
+             f'Прирост в зарплате составит примерно {round((best_vacancy.salary - person_description.salary)/person_description.salary, 2) * 100}% от текущей зарплаты\n' \
              f'Скилл, который нужно подтянуть в первую очередь: {worst_skill}. ' \
              f'Разница с идеалом составляет {skill_difference} условных пункта'
     update.message.reply_text(text=answer, reply_markup=kbd)
