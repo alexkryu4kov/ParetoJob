@@ -18,8 +18,8 @@ class Transformer:
             common_vector = np.array(common_vector)
             vector_of_ratings = np.array(vector_of_ratings)
             vector_of_vacancies.append(
-                {'id': current_id, 'ratings': vector_of_ratings, 'salary': salary, 'link': vacancy.link,
-                 'vector': common_vector})
+                {'id': current_id, 'name': vacancy.name, 'ratings': vector_of_ratings, 'salary': salary, 'link': vacancy.link,
+                 'vector': common_vector, 'skills': vacancy.skills})
         return vector_of_vacancies
 
     def person_to_vector(self, person: PersonDescription) -> dict:

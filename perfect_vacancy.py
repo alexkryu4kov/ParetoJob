@@ -1,8 +1,10 @@
-from Descriptions import VacancyDescription, PersonDescription
-from typing import List, Tuple
+from typing import Tuple
+
 from synthetic_generator import Generator
 from optimization import scalar_optimize
+from Descriptions import VacancyDescription, PersonDescription
 from Transformer import Transformer
+
 
 person_description = PersonDescription(
     salary=60_000,
@@ -68,3 +70,11 @@ vacancies_vectors = transformer.vacancy_to_vector(all_vacancies_descriptions)
 best_vacancy = scalar_optimize(vacancies_vectors, person_vector)
 
 print(best_vacancy)
+
+
+def get_skill_difference(person: PersonDescription, perfect_vacancy: dict) -> Tuple[str, int]:
+    difference = {}
+    for key, elem in person.skills.items():
+        difference[key] = perfect_vacancy['skills'][key] - elem
+    max_difference = max(difference, key=difference.get)
+    return max_difference, difference[max_difference]
