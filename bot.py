@@ -11,16 +11,18 @@ from telegram.replykeyboardmarkup import ReplyKeyboardMarkup
 from telegram.replykeyboardremove import ReplyKeyboardRemove
 from telegram.update import Update
 
+from descriptions import PersonDescription
+from optimization import scalar_optimize
 from perfect_vacancy import (
     all_vacancies_descriptions,
     get_skill_difference,
-    get_perfect_vacancy,
     person_description,
-    Description,
 )
+from transformer import Transformer
 
 
 users = defaultdict()
+transformer = Transformer()
 
 
 def random_greeting():
@@ -34,7 +36,7 @@ professions = []
 
 
 def start(update: Update, context: CallbackContext):
-    users[update.message.chat_id] = Description()
+    users[update.message.chat_id] = PersonDescription()
     kbd_layout = [['Python разработчик'], ['Таргетолог'], ['UI/UX designer']]
     kbd = ReplyKeyboardMarkup(kbd_layout)
     update.message.reply_text(text='Выбери профессию, в которой ты хочешь развиваться', reply_markup=kbd)
@@ -117,18 +119,19 @@ def choose_weak_skills(update: Update, context: CallbackContext):
 def make_recommendation(update: Update, context: CallbackContext):
     kbd_layout = [['А как мне его подтянуть']]
     kbd = ReplyKeyboardMarkup(kbd_layout, resize_keyboard=True)
-    perfect_vacancy = get_perfect_vacancy(person_description, all_vacancies_descriptions)
-    worst_skill, skill_difference = get_skill_difference(person_description, perfect_vacancy)
+    person_vector = transformer.person_to_vector(person_description).vector
+    vacancies_vectors = transformer.vacancy_to_vector(all_vacancies_descriptions)
+    best_vacancy = scalar_optimize(vacancies_vectors, person_vector)
+    worst_skill, skill_difference = get_skill_difference(person_description, best_vacancy)
     answer = f'Моя рекомендация готова!\n\n' \
-             f'Вакансия для тебя: {perfect_vacancy.name} {perfect_vacancy.link}\n' \
-             f'Прирост в зарплате составит примерно {round((perfect_vacancy.salary - person_description.salary)/person_description.salary, 2) * 100}% от текущей зарплаты\n' \
+             f'Вакансия для тебя: {best_vacancy.name} {best_vacancy.link}\n' \
+             f'Прирост в зарплате составит примерно {round((best_vacancy.salary - person_description.salary)/person_description.salary, 2) * 100}% от текущей зарплаты\n' \
              f'Скилл, который нужно подтянуть в первую очередь: {worst_skill}. ' \
              f'Разница с идеалом составляет {skill_difference} условных пункта'
     update.message.reply_text(text=answer, reply_markup=kbd)
 
 
 def courses(update: Update, context: CallbackContext):
-    print(users[update.message.chat_id])
     reply_markup = ReplyKeyboardRemove()
     answer = f'Обрати внимание на эти ресурсы:\n' \
              f'Курс: https://netology.ru/programs/sql-lessons\n' \

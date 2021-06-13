@@ -1,20 +1,10 @@
-from collections import defaultdict
-from dataclasses import dataclass, field
-from typing import List, Tuple
+from typing import Tuple
+
+from descriptions import VacancyDescription, PersonDescription
 
 
-@dataclass
-class Description:
-    name: str = ''
-    salary: int = 0
-    link: str = ''
-    skills: dict = field(default_factory=defaultdict)
-
-
-person_description = Description(
-    name='Python разработчик',
+person_description = PersonDescription(
     salary=60_000,
-    link='https://hh.ru/vacancy/41959154',
     skills={
         'python': 3,
         'sql': 2,
@@ -25,7 +15,8 @@ person_description = Description(
 )
 
 all_vacancies_descriptions = [
-    Description(
+    VacancyDescription(
+        id=1,
         name='Python разработчик',
         salary=80_000,
         link='https://hh.ru/vacancy/41959154',
@@ -37,7 +28,8 @@ all_vacancies_descriptions = [
             'teamwork': 4,
         }
     ),
-    Description(
+    VacancyDescription(
+        id=2,
         name='Python разработчик',
         salary=100_000,
         link='https://hh.ru/vacancy/41959154',
@@ -49,7 +41,8 @@ all_vacancies_descriptions = [
             'teamwork': 5,
         }
     ),
-    Description(
+    VacancyDescription(
+        id=3,
         name='Python разработчик',
         salary=110_000,
         link='https://hh.ru/vacancy/41959154',
@@ -64,18 +57,7 @@ all_vacancies_descriptions = [
 ]
 
 
-def get_perfect_vacancy(person: Description, all_vacancies: List[Description]) -> Description:
-    """Возвращает оптимальную вакансию.
-
-    Вакансия выбирается из списка all_vacations, и должна соответствовать двум критериям:
-    * максимальная разница в salary с person
-    * минимальная разница в скиллах с person
-    """
-
-    return all_vacancies[-1]
-
-
-def get_skill_difference(person: Description, perfect_vacancy: Description) -> Tuple[str, int]:
+def get_skill_difference(person: PersonDescription, perfect_vacancy: VacancyDescription) -> Tuple[str, int]:
     difference = {}
     for key, elem in person.skills.items():
         difference[key] = perfect_vacancy.skills[key] - elem
