@@ -13,7 +13,7 @@ class Description:
 person_description = Description(
     name='Python разработчик',
     salary=60_000,
-    link='https://hh.ru/vacancy/44856473',
+    link='https://hh.ru/vacancy/41959154',
     skills={
         'python': 3,
         'sql': 2,
@@ -27,7 +27,7 @@ all_vacancies_descriptions = [
     Description(
         name='Python разработчик',
         salary=80_000,
-        link='https://hh.ru/vacancy/44856473',
+        link='https://hh.ru/vacancy/41959154',
         skills={
             'python': 3,
             'sql': 2,
@@ -39,7 +39,7 @@ all_vacancies_descriptions = [
     Description(
         name='Python разработчик',
         salary=100_000,
-        link='https://hh.ru/vacancy/44856473',
+        link='https://hh.ru/vacancy/41959154',
         skills={
             'python': 4,
             'sql': 2,
@@ -51,7 +51,7 @@ all_vacancies_descriptions = [
     Description(
         name='Python разработчик',
         salary=110_000,
-        link='https://hh.ru/vacancy/44856473',
+        link='https://hh.ru/vacancy/41959154',
         skills={
             'python': 5,
             'sql': 5,
@@ -71,12 +71,12 @@ def get_perfect_vacancy(person: Description, all_vacancies: List[Description]) -
     * минимальная разница в скиллах с person
     """
 
-    return all_vacancies[0]
+    return all_vacancies[-1]
 
 
 def get_skill_difference(person: Description, perfect_vacancy: Description) -> Tuple[str, int]:
     difference = {}
     for key, elem in person.skills.items():
-        difference[key] = elem - perfect_vacancy.skills[key]
+        difference[key] = perfect_vacancy.skills[key] - elem
     max_difference = max(difference, key=difference.get)
     return max_difference, difference[max_difference]

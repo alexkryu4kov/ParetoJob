@@ -35,36 +35,42 @@ def rules(update: Update, context: CallbackContext):
 
 
 def choose_perfect_skills(update: Update, context: CallbackContext):
-    if update.message in ('Python', 'SQL', 'Web'):
-        context.bot.sendMessage(
-            chat_id=update.message.chat_id,
-            text=f'Отличный выбор {update.message}',
-        )
     kbd_layout = [['Python'], ['SQL'], ['Web'], ['Перейти к выбору навыков, которые хочется подтянуть']]
     kbd = ReplyKeyboardMarkup(kbd_layout)
-    update.message.reply_text(text="Выбери навыки, в которых ты уверен", reply_markup=kbd)
+    if update.message.text in ('Python', 'SQL', 'Web'):
+        context.bot.sendMessage(
+            chat_id=update.message.chat_id,
+            text=f'Отличный выбор! Есть ли еще навыки, в которых ты уверен?',
+            reply_markup=kbd,
+        )
+    else:
+        update.message.reply_text(text="Выбери навыки, в которых ты уверен", reply_markup=kbd)
 
 
 def choose_middle_skills(update: Update, context: CallbackContext):
-    if update.message in ('Python', 'SQL', 'Web'):
+    kbd_layout = [['CI/CD'], ['Golang'], ['Tests'], ['Перейти к выбору навыков, которые хочется изучить']]
+    kbd = ReplyKeyboardMarkup(kbd_layout)
+    if update.message.text in ('CI/CD', 'Golang', 'Tests'):
         context.bot.sendMessage(
             chat_id=update.message.chat_id,
-            text=f'Отличный выбор {update.message}',
+            text=f'Отличный выбор! Есть ли еще навыки, которые хочется подтянуть?',
+            reply_markup=kbd,
         )
-    kbd_layout = [['Python'], ['SQL'], ['Web'], ['Перейти к выбору навыков, которые хочется изучить']]
-    kbd = ReplyKeyboardMarkup(kbd_layout)
-    update.message.reply_text(text="Выбери навыки, которые хочется подтянуть", reply_markup=kbd)
+    else:
+        update.message.reply_text(text="Выбери навыки, которые хочется подтянуть", reply_markup=kbd)
 
 
 def choose_weak_skills(update: Update, context: CallbackContext):
-    if update.message in ('Python', 'SQL', 'Web'):
+    kbd_layout = [['Teamwork'], ['Docker'], ['Asyncio'], ['Перейти к рекомендациям']]
+    kbd = ReplyKeyboardMarkup(kbd_layout)
+    if update.message.text in ('Teamwork', 'Docker', 'Asyncio'):
         context.bot.sendMessage(
             chat_id=update.message.chat_id,
-            text=f'Отличный выбор {update.message}',
+            text='Отличный выбор! Есть ли еще навыки, которые хочется изучить?',
+            reply_markup=kbd,
         )
-    kbd_layout = [['Python'], ['SQL'], ['Web'], ['Перейти к рекомендациям']]
-    kbd = ReplyKeyboardMarkup(kbd_layout)
-    update.message.reply_text(text="Выбери навыки, которые хочется изучить", reply_markup=kbd)
+    else:
+        update.message.reply_text(text="Выбери навыки, которые хочется изучить", reply_markup=kbd)
 
 
 def make_recommendation(update: Update, context: CallbackContext):
@@ -84,11 +90,11 @@ dispatcher.add_handler(MessageHandler(
     choose_perfect_skills,
 ))
 dispatcher.add_handler(MessageHandler(
-    Filters.regex('^Перейти к выбору навыков, которые хочется подтянуть$'),
+    Filters.regex('^(Перейти к выбору навыков, которые хочется подтянуть|CI/CD|Golang|Tests)$'),
     choose_middle_skills,
 ))
 dispatcher.add_handler(MessageHandler(
-    Filters.regex('^Перейти к выбору навыков, которые хочется изучить$'),
+    Filters.regex('^(Перейти к выбору навыков, которые хочется изучить|Teamwork|Docker|Asyncio)$'),
     choose_weak_skills,
 ))
 dispatcher.add_handler(MessageHandler(
