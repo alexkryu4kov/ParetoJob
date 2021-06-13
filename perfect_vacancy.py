@@ -1,13 +1,14 @@
-from dataclasses import dataclass
+from collections import defaultdict
+from dataclasses import dataclass, field
 from typing import List, Tuple
 
 
 @dataclass
 class Description:
-    name: str
-    salary: int
-    link: str
-    skills: dict
+    name: str = ''
+    salary: int = 0
+    link: str = ''
+    skills: dict = field(default_factory=defaultdict)
 
 
 person_description = Description(

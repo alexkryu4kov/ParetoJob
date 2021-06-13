@@ -1,5 +1,6 @@
 import os
 import random
+from collections import defaultdict
 
 from telegram.ext import Filters
 from telegram.ext.callbackcontext import CallbackContext
@@ -15,7 +16,11 @@ from perfect_vacancy import (
     get_skill_difference,
     get_perfect_vacancy,
     person_description,
+    Description,
 )
+
+
+users = defaultdict()
 
 
 def random_greeting():
@@ -29,6 +34,7 @@ professions = []
 
 
 def start(update: Update, context: CallbackContext):
+    users[update.message.chat_id] = Description()
     kbd_layout = [['Python разработчик'], ['Таргетолог'], ['UI/UX designer']]
     kbd = ReplyKeyboardMarkup(kbd_layout)
     update.message.reply_text(text='Выбери профессию, в которой ты хочешь развиваться', reply_markup=kbd)
@@ -42,6 +48,7 @@ def rules(update: Update, context: CallbackContext):
 
 
 def ask_salary(update: Update, context: CallbackContext):
+    users[update.message.chat_id].name = update.message.text
     kbd_layout = [['0-100'], ['100-150'], ['150+']]
     kbd = ReplyKeyboardMarkup(kbd_layout)
     update.message.reply_text(
@@ -55,12 +62,14 @@ def choose_perfect_skills(update: Update, context: CallbackContext):
     kbd_layout = [['Python'], ['SQL'], ['Web'], ['Перейти к выбору навыков, которые хочется подтянуть']]
     kbd = ReplyKeyboardMarkup(kbd_layout)
     if update.message.text in ('Python', 'SQL', 'Web'):
+        users[update.message.chat_id].skills[update.message.text] = 5
         context.bot.sendMessage(
             chat_id=update.message.chat_id,
             text=f'{random_greeting()} Есть ли еще навыки, в которых ты уверен?',
             reply_markup=kbd,
         )
     else:
+        users[update.message.chat_id].salary = update.message.text
         update.message.reply_text(
             text='Благодарю за честность!\n'
                  'А теперь давай познакомимся поближе:)\n'
@@ -73,6 +82,7 @@ def choose_middle_skills(update: Update, context: CallbackContext):
     kbd_layout = [['CI/CD'], ['Golang'], ['Tests'], ['Перейти к выбору навыков, которые хочется изучить']]
     kbd = ReplyKeyboardMarkup(kbd_layout)
     if update.message.text in ('CI/CD', 'Golang', 'Tests'):
+        users[update.message.chat_id].skills[update.message.text] = 3
         context.bot.sendMessage(
             chat_id=update.message.chat_id,
             text=f'{random_greeting()} Есть ли еще навыки, которые хочется подтянуть?',
@@ -96,6 +106,7 @@ def choose_weak_skills(update: Update, context: CallbackContext):
             reply_markup=kbd,
         )
     else:
+        users[update.message.chat_id].salary = update.message.text
         update.message.reply_text(
             text='Осталось совсем чуть-чуть!\n'
                  'Выбери навыки из спика ниже, которые хочется изучить',
@@ -117,6 +128,7 @@ def make_recommendation(update: Update, context: CallbackContext):
 
 
 def courses(update: Update, context: CallbackContext):
+    print(users[update.message.chat_id])
     reply_markup = ReplyKeyboardRemove()
     answer = f'Обрати внимание на эти ресурсы:\n' \
              f'Курс: https://netology.ru/programs/sql-lessons\n' \
