@@ -22,11 +22,16 @@ def random_greeting():
 def choose_perfect_skills(update: Update, context: CallbackContext):
     if update.message.chat_id not in users:
         users[update.message.chat_id] = PersonDescription(skills=deepcopy(default_skills))
+    if f'{update.message.chat_id}_perfect_layout' not in users:
+        users[f'{update.message.chat_id}_perfect_layout'] = deepcopy(PERFECT_KBD_LAYOUT)
     kbd = ReplyKeyboardMarkup(PERFECT_KBD_LAYOUT, resize_keyboard=True)
     if update.message.text in ('Git', 'SQL', 'Python', 'Data Analysis'):
         users[update.message.chat_id].skills[update.message.text] = 5
-        PERFECT_KBD_LAYOUT.remove([update.message.text])
-        kbd = ReplyKeyboardMarkup(PERFECT_KBD_LAYOUT, resize_keyboard=True)
+        try:
+            users[f'{update.message.chat_id}_perfect_layout'].remove([update.message.text])
+        except ValueError:
+            pass
+        kbd = ReplyKeyboardMarkup(users[f'{update.message.chat_id}_perfect_layout'], resize_keyboard=True)
         context.bot.sendMessage(
             chat_id=update.message.chat_id,
             text=f'{random_greeting()} Есть ли еще навыки, в которых ты уверен?',
@@ -45,12 +50,16 @@ def choose_perfect_skills(update: Update, context: CallbackContext):
 def choose_middle_skills(update: Update, context: CallbackContext):
     if update.message.chat_id not in users:
         users[update.message.chat_id] = PersonDescription(skills=deepcopy(default_skills))
-
-    kbd = ReplyKeyboardMarkup(MIDDLE_KBD_LAYOUT, resize_keyboard=True)
+    if f'{update.message.chat_id}_middle_layout' not in users:
+        users[f'{update.message.chat_id}_middle_layout'] = deepcopy(MIDDLE_KBD_LAYOUT)
+    kbd = ReplyKeyboardMarkup(users[f'{update.message.chat_id}_middle_layout'], resize_keyboard=True)
     if update.message.text in ('Web', 'Algorithms', 'Machine Learning', 'Docker'):
         users[update.message.chat_id].skills[update.message.text] = 3
-        MIDDLE_KBD_LAYOUT.remove([update.message.text])
-        kbd = ReplyKeyboardMarkup(MIDDLE_KBD_LAYOUT, resize_keyboard=True)
+        try:
+            users[f'{update.message.chat_id}_middle_layout'].remove([update.message.text])
+        except ValueError:
+            pass
+        kbd = ReplyKeyboardMarkup(users[f'{update.message.chat_id}_middle_layout'], resize_keyboard=True)
         context.bot.sendMessage(
             chat_id=update.message.chat_id,
             text=f'{random_greeting()} Есть ли еще навыки, которые хочется подтянуть?',
@@ -67,11 +76,16 @@ def choose_middle_skills(update: Update, context: CallbackContext):
 def choose_weak_skills(update: Update, context: CallbackContext):
     if update.message.chat_id not in users:
         users[update.message.chat_id] = PersonDescription(skills=deepcopy(default_skills))
-    kbd = ReplyKeyboardMarkup(WEAK_KBD_LAYOUT, resize_keyboard=True)
+    if f'{update.message.chat_id}_weak_layout' not in users:
+        users[f'{update.message.chat_id}_weak_layout'] = deepcopy(WEAK_KBD_LAYOUT)
+    kbd = ReplyKeyboardMarkup(users[f'{update.message.chat_id}_weak_layout'], resize_keyboard=True)
     if update.message.text in ('CI/CD', 'Testing', 'Golang', 'Asyncio'):
         users[update.message.chat_id].skills[update.message.text] = 1
-        WEAK_KBD_LAYOUT.remove([update.message.text])
-        kbd = ReplyKeyboardMarkup(WEAK_KBD_LAYOUT, resize_keyboard=True)
+        try:
+            users[f'{update.message.chat_id}_weak_layout'].remove([update.message.text])
+        except ValueError:
+            pass
+        kbd = ReplyKeyboardMarkup(users[f'{update.message.chat_id}_weak_layout'], resize_keyboard=True)
         context.bot.sendMessage(
             chat_id=update.message.chat_id,
             text=f'{random_greeting()} Есть ли еще навыки, которые хочется изучить?',
