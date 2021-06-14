@@ -2,9 +2,9 @@ from telegram.ext.callbackcontext import CallbackContext
 from telegram.replykeyboardmarkup import ReplyKeyboardMarkup
 from telegram.update import Update
 
+from algorithm.optimization import get_skill_difference, scalar_optimize
+from algorithm.transformer import Transformer
 from users import users
-from optimization import get_skill_difference, scalar_optimize
-from transformer import Transformer
 from vacancies import real_vacancies
 
 
