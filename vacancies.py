@@ -1,50 +1,102 @@
+from copy import deepcopy
+
 from descriptions import default_skills, VacancyDescription
 
 
-all_vacancies_descriptions = [
+real_vacancies = [
     VacancyDescription(
-        id=1,
-        name='Python разработчик',
-        salary=80_000,
-        link='https://hh.ru/vacancy/41959154',
-        skills=default_skills,
+        name='Стажёр Data Scientist',
+        salary=50000,
+        link='https://opendatascience.slack.com/archives/C04DA5FUF/p1623430610039600',
+        skills=deepcopy(default_skills),
     ),
     VacancyDescription(
-        id=2,
-        name='Python разработчик',
-        salary=100_000,
-        link='https://hh.ru/vacancy/41959154',
-        skills=default_skills,
+        name='Junior Data Scientist',
+        salary=100000,
+        link='https://opendatascience.slack.com/archives/C04DA5FUF/p1623410043499300',
+        skills=deepcopy(default_skills),
     ),
     VacancyDescription(
-        id=3,
-        name='Python разработчик',
-        salary=110_000,
-        link='https://hh.ru/vacancy/41959154',
-        skills=default_skills,
+        name='Middle Аналитик Данных',
+        salary=120000,
+        link='https://opendatascience.slack.com/archives/C04DA5FUF/p1623406169497200',
+        skills=deepcopy(default_skills),
     ),
-]
+    VacancyDescription(
+        name='Team Lead DS',
+        salary=250000,
+        link='https://opendatascience.slack.com/archives/C04DA5FUF/p1623248503415500',
+        skills=deepcopy(default_skills),
+    ),
+    VacancyDescription(
+        name='Middle DS',
+        salary=200000,
+        link='https://opendatascience.slack.com/archives/C04DA5FUF/p1623242599398200',
+        skills=deepcopy(default_skills),
+    ),
+    VacancyDescription(
+        name='Junior Python Developer',
+        salary=100000,
+        link='https://hh.ru/vacancy/45375879',
+        skills=deepcopy(default_skills),
+    ),
+    VacancyDescription(
+        name='Team Lead DS',
+        salary=250000,
+        link='https://opendatascience.slack.com/archives/C04DA5FUF/p1623248503415500',
+        skills=deepcopy(default_skills),
+    )]
 
-all_vacancies_descriptions[0].skills.update({
-        'python': 3,
-        'sql': 2,
-        'tests': 3,
-        'web': 3,
-        'teamwork': 4,
+
+real_vacancies[0].skills.update({
+        'Python': 3,
+        'SQL': 1,
+        'Git': 3,
+        'ML': 2,
+        'Algorithms': 2,
     })
 
-all_vacancies_descriptions[1].skills.update({
-        'python': 4,
-        'sql': 2,
-        'tests': 3,
-        'web': 3,
-        'teamwork': 5,
+real_vacancies[1].skills.update({
+        'Python': 3,
+        'SQL': 2,
+        'Git': 3,
+        'ML': 3,
+        'CI/CD': 1,
     })
 
-all_vacancies_descriptions[2].skills.update({
-        'python': 5,
-        'sql': 5,
-        'tests': 5,
-        'web': 5,
-        'teamwork': 4,
+real_vacancies[2].skills.update({
+        'Python': 5,
+        'SQL': 4,
+        'Git': 5,
+        'Data Analysis': 4,
+    })
+
+real_vacancies[3].skills.update({
+        'Python': 5,
+        'CI/CD': 2,
+        'Algorithms': 3,
+        'ML': 5,
+        'Data Analysis': 4,
+    })
+
+real_vacancies[4].skills.update({
+        'Python': 4,
+        'SQL': 3,
+        'ML': 4,
+        'Data Analysis': 4,
+    })
+
+real_vacancies[5].skills.update({
+        'Python': 4,
+        'SQL': 3,
+        'Algorithms': 3,
+        'Data Analysis': 3,
+    })
+
+real_vacancies[6].skills.update({
+        'Python': 5,
+        'CI/CD': 2,
+        'Algorithms': 3,
+        'ML': 5,
+        'Data Analysis': 4,
     })

@@ -17,7 +17,7 @@ from perfect_vacancy import (
     get_skill_difference,
 )
 from transformer import Transformer
-from vacancies import all_vacancies_descriptions
+from vacancies import real_vacancies
 
 salaries = {'0-50': 50000, '50-100': 100000, '100-130': 130000, '130-160': 160000, 'Больше 160': 200000}
 
@@ -122,9 +122,11 @@ def make_recommendation(update: Update, context: CallbackContext):
     kbd_layout = [['А как мне его подтянуть']]
     kbd = ReplyKeyboardMarkup(kbd_layout, resize_keyboard=True)
     person = users[update.message.chat_id]
+    print(person)
     person_vector = transformer.person_to_vector(person).vector
-    vacancies_vectors = transformer.vacancy_to_vector(all_vacancies_descriptions)
+    vacancies_vectors = transformer.vacancy_to_vector(real_vacancies)
     best_vacancy = scalar_optimize(vacancies_vectors, person_vector)
+    print(person)
     worst_skill, skill_difference = get_skill_difference(person, best_vacancy)
     users[update.message.chat_id].needed_skill = worst_skill
     try:

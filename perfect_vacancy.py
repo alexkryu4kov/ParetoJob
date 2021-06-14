@@ -17,7 +17,10 @@ person_description = PersonDescription(
 
 def get_skill_difference(person: PersonDescription, perfect_vacancy: VacancyDescription) -> Tuple[str, int]:
     difference = {}
+    print(perfect_vacancy.skills)
+    print(person.skills)
     for key, elem in person.skills.items():
         difference[key] = perfect_vacancy.skills[key] - elem
+    print(difference)
     max_difference = max(difference, key=difference.get)
     return max_difference, difference[max_difference]

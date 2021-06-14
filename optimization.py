@@ -1,6 +1,7 @@
+from copy import deepcopy
 from typing import List
 
-from numpy import exp, log, ndarray
+from numpy import exp, log
 
 from descriptions import default_skills, VacancyDescription
 
@@ -16,9 +17,9 @@ def optimizing_function(salary: int, rating: int):
         return -1000
 
 
-def scalar_optimize(vacancies_info: List[VacancyDescription], person_vector: ndarray):
+def scalar_optimize(vacancies_info: List[VacancyDescription], person_vector: list):
     best_metric = -100
-    best_vacancy = VacancyDescription(skills=default_skills)
+    best_vacancy = VacancyDescription(skills=deepcopy(default_skills))
     for vacancy in vacancies_info:
         difference_vector = vacancy.vector - person_vector
         sum_ratings = sum(difference_vector[:-1])

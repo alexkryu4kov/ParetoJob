@@ -14,6 +14,9 @@ skills = frozenset((
     'Algorithms',
     'Docker',
     'Asyncio',
+    'ML',
+    'Git',
+    'Data Analysis',
 ))
 
 courses = {
@@ -36,7 +39,7 @@ courses = {
                   'https://www.labirint.ru/books/671295/\n',
 }
 
-default_skills = defaultdict(int, {k: 0 for k in skills})
+default_skills = defaultdict(int, {k: 2 for k in skills})
 
 
 @dataclass
