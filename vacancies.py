@@ -3,6 +3,7 @@ from copy import deepcopy
 from descriptions import default_skills, VacancyDescription
 
 
+# TODO: получать вакансии из базы
 real_vacancies = [
     VacancyDescription(
         name='Стажёр Data Scientist',
