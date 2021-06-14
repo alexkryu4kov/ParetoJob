@@ -30,7 +30,7 @@ class BaseDescription:
 
 @dataclass
 class PersonDescription(BaseDescription):
-    needed_skill: str = ''
+    needed_skill: str = 'Machine Learning'
     ratings: list = field(default_factory=list)
     vector: list = field(default_factory=list)
 
