@@ -31,7 +31,7 @@ dispatcher.add_handler(MessageHandler(
     choose_perfect_skills,
 ))
 dispatcher.add_handler(MessageHandler(
-    Filters.regex('^(Перейти к выбору навыков, которые хочется подтянуть|Web|Algorithms|ML|Docker|)$'),
+    Filters.regex('^(Перейти к выбору навыков, которые хочется подтянуть|Web|Algorithms|Machine Learning|Docker|)$'),
     choose_middle_skills,
 ))
 dispatcher.add_handler(MessageHandler(

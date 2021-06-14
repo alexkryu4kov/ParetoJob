@@ -11,5 +11,5 @@ salaries = {
 }
 
 PERFECT_KBD_LAYOUT = [['Git'], ['SQL'], ['Python'], ['Data Analysis'], ['Перейти к выбору навыков, которые хочется подтянуть']]
-MIDDLE_KBD_LAYOUT = [['Web'], ['Algorithms'], ['ML'], ['Docker'], ['Перейти к выбору навыков, которые хочется изучить']]
+MIDDLE_KBD_LAYOUT = [['Web'], ['Algorithms'], ['Machine Learning'], ['Docker'], ['Перейти к выбору навыков, которые хочется изучить']]
 WEAK_KBD_LAYOUT = [['CI/CD'], ['Testing'], ['Golang'], ['Asyncio'], ['Перейти к рекомендациям']]

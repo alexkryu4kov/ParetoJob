@@ -17,10 +17,10 @@ courses = {
                   'https://www.coursera.org/learn/algorithms-part1\n'
                   'https://www.coursera.org/learn/algorithms-part2\n'
                   'https://www.labirint.ru/books/671295/\n',
-    'Web': '',
-    'Docker': '',
-    'Asyncio': '',
-    'ML': '',
-    'Git': '',
-    'Data Analysis': '',
+    'Web': 'https://www.coursera.org/learn/html-css-javascript-for-web-developers',
+    'Docker': 'https://www.edx.org/course/introduction-to-containers-kubernetes-and-openshift',
+    'Asyncio': 'https://www.datacamp.com/community/tutorials/asyncio-introduction',
+    'Machine Learning': 'https://mlcourse.ai/',
+    'Git': 'https://www.codecademy.com/learn/learn-git',
+    'Data Analysis': 'https://www.udacity.com/course/data-analyst-nanodegree--nd002',
 }

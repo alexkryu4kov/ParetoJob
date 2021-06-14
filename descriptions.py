@@ -14,7 +14,7 @@ skills = frozenset((
     'Algorithms',
     'Docker',
     'Asyncio',
-    'ML',
+    'Machine Learning',
     'Git',
     'Data Analysis',
 ))

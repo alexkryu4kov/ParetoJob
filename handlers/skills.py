@@ -40,7 +40,7 @@ def choose_perfect_skills(update: Update, context: CallbackContext):
 
 def choose_middle_skills(update: Update, context: CallbackContext):
     kbd = ReplyKeyboardMarkup(MIDDLE_KBD_LAYOUT, resize_keyboard=True)
-    if update.message.text in ('Web', 'Algorithms', 'ML', 'Docker'):
+    if update.message.text in ('Web', 'Algorithms', 'Machine Learning', 'Docker'):
         users[update.message.chat_id].skills[update.message.text] = 3
         MIDDLE_KBD_LAYOUT.remove([update.message.text])
         kbd = ReplyKeyboardMarkup(MIDDLE_KBD_LAYOUT, resize_keyboard=True)
