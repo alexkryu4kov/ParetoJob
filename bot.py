@@ -1,6 +1,7 @@
 import os
 import random
 from collections import defaultdict
+from copy import deepcopy
 
 from telegram.ext import Filters
 from telegram.ext.callbackcontext import CallbackContext
@@ -13,19 +14,31 @@ from telegram.update import Update
 
 from descriptions import courses, default_skills, PersonDescription
 from optimization import scalar_optimize
-from perfect_vacancy import (
-    get_skill_difference,
-)
+from perfect_vacancy import get_skill_difference
 from transformer import Transformer
 from vacancies import real_vacancies
 
-salaries = {'0-50': 50000, '50-100': 100000, '100-130': 130000, '130-160': 160000, 'Больше 160': 200000}
+salaries = {
+    '0-50': random.randint(0, 50) * 1000,
+    '50-100': random.randint(50, 100) * 1000,
+    '100-130': random.randint(100, 130) * 1000,
+    '130-160': random.randint(130, 160) * 1000,
+    'Больше 160': random.randint(160, 200) * 1000,
+    'Ничего вам не скажу': 100000,
+}
 
 
 users = defaultdict()
 transformer = Transformer()
-users[242282672] = PersonDescription(salary=80000, skills=default_skills, ratings=[], vector=[])
-users[428336217] = PersonDescription(salary=80000, skills=default_skills, ratings=[], vector=[])
+
+# диалоги разработчиков для отладки бота
+users[242282672] = PersonDescription(salary=80000, skills=deepcopy(default_skills), ratings=[], vector=[])
+users[428336217] = PersonDescription(salary=80000, skills=deepcopy(default_skills), ratings=[], vector=[])
+
+
+PERFECT_KBD_LAYOUT = [['Git'], ['SQL'], ['Python'], ['Data Analysis'], ['Перейти к выбору навыков, которые хочется подтянуть']]
+MIDDLE_KBD_LAYOUT = [['Web'], ['Algorithms'], ['ML'], ['Docker'], ['Перейти к выбору навыков, которые хочется изучить']]
+WEAK_KBD_LAYOUT = [['CI/CD'], ['Testing'], ['Golang'], ['Asyncio'], ['Перейти к рекомендациям']]
 
 
 def random_greeting():
@@ -39,9 +52,9 @@ professions = []
 
 
 def start(update: Update, context: CallbackContext):
-    users[update.message.chat_id] = PersonDescription(skills=default_skills)
-    kbd_layout = [['Python разработчик'], ['Таргетолог'], ['UI/UX designer']]
-    kbd = ReplyKeyboardMarkup(kbd_layout)
+    users[update.message.chat_id] = PersonDescription(skills=deepcopy(default_skills))
+    kbd_layout = [['Python разработчик'], ['Data Scientist']]
+    kbd = ReplyKeyboardMarkup(kbd_layout, resize_keyboard=True)
     update.message.reply_text(text='Выбери профессию, в которой ты хочешь развиваться', reply_markup=kbd)
 
 
@@ -54,8 +67,8 @@ def rules(update: Update, context: CallbackContext):
 
 def ask_salary(update: Update, context: CallbackContext):
     users[update.message.chat_id].name = update.message.text
-    kbd_layout = [['0-50'], ['50-100'], ['100-130'], ['130-160'], ['Больше 160']]
-    kbd = ReplyKeyboardMarkup(kbd_layout)
+    kbd_layout = [['0-50'], ['50-100'], ['100-130'], ['130-160'], ['Больше 160'], ['Ничего вам не скажу']]
+    kbd = ReplyKeyboardMarkup(kbd_layout, resize_keyboard=True)
     update.message.reply_text(
         text='Какая интересная профессия!\n'
              'Укажи диапазон в котором находится твоя зарплата (об этом конечно же никто не узнает)',
@@ -64,10 +77,11 @@ def ask_salary(update: Update, context: CallbackContext):
 
 
 def choose_perfect_skills(update: Update, context: CallbackContext):
-    kbd_layout = [['Python'], ['SQL'], ['Web'], ['Перейти к выбору навыков, которые хочется подтянуть']]
-    kbd = ReplyKeyboardMarkup(kbd_layout)
-    if update.message.text in ('Python', 'SQL', 'Web'):
+    kbd = ReplyKeyboardMarkup(PERFECT_KBD_LAYOUT, resize_keyboard=True)
+    if update.message.text in ('Git', 'SQL', 'Python', 'Data Analysis'):
         users[update.message.chat_id].skills[update.message.text] = 5
+        PERFECT_KBD_LAYOUT.remove([update.message.text])
+        kbd = ReplyKeyboardMarkup(PERFECT_KBD_LAYOUT, resize_keyboard=True)
         context.bot.sendMessage(
             chat_id=update.message.chat_id,
             text=f'{random_greeting()} Есть ли еще навыки, в которых ты уверен?',
@@ -84,10 +98,11 @@ def choose_perfect_skills(update: Update, context: CallbackContext):
 
 
 def choose_middle_skills(update: Update, context: CallbackContext):
-    kbd_layout = [['CI/CD'], ['Golang'], ['Tests'], ['Перейти к выбору навыков, которые хочется изучить']]
-    kbd = ReplyKeyboardMarkup(kbd_layout)
-    if update.message.text in ('CI/CD', 'Golang', 'Tests'):
+    kbd = ReplyKeyboardMarkup(MIDDLE_KBD_LAYOUT, resize_keyboard=True)
+    if update.message.text in ('Web', 'Algorithms', 'ML', 'Docker'):
         users[update.message.chat_id].skills[update.message.text] = 3
+        MIDDLE_KBD_LAYOUT.remove([update.message.text])
+        kbd = ReplyKeyboardMarkup(MIDDLE_KBD_LAYOUT, resize_keyboard=True)
         context.bot.sendMessage(
             chat_id=update.message.chat_id,
             text=f'{random_greeting()} Есть ли еще навыки, которые хочется подтянуть?',
@@ -102,9 +117,11 @@ def choose_middle_skills(update: Update, context: CallbackContext):
 
 
 def choose_weak_skills(update: Update, context: CallbackContext):
-    kbd_layout = [['Algorithms'], ['Docker'], ['Asyncio'], ['Перейти к рекомендациям']]
-    kbd = ReplyKeyboardMarkup(kbd_layout)
-    if update.message.text in ('Algorithms', 'Docker', 'Asyncio'):
+    kbd = ReplyKeyboardMarkup(WEAK_KBD_LAYOUT, resize_keyboard=True)
+    if update.message.text in ('CI/CD', 'Testing', 'Golang', 'Asyncio'):
+        users[update.message.chat_id].skills[update.message.text] = 1
+        WEAK_KBD_LAYOUT.remove([update.message.text])
+        kbd = ReplyKeyboardMarkup(WEAK_KBD_LAYOUT, resize_keyboard=True)
         context.bot.sendMessage(
             chat_id=update.message.chat_id,
             text=f'{random_greeting()} Есть ли еще навыки, которые хочется изучить?',
@@ -122,11 +139,9 @@ def make_recommendation(update: Update, context: CallbackContext):
     kbd_layout = [['А как мне его подтянуть']]
     kbd = ReplyKeyboardMarkup(kbd_layout, resize_keyboard=True)
     person = users[update.message.chat_id]
-    print(person)
     person_vector = transformer.person_to_vector(person).vector
     vacancies_vectors = transformer.vacancy_to_vector(real_vacancies)
     best_vacancy = scalar_optimize(vacancies_vectors, person_vector)
-    print(person)
     worst_skill, skill_difference = get_skill_difference(person, best_vacancy)
     users[update.message.chat_id].needed_skill = worst_skill
     try:
@@ -151,19 +166,19 @@ def get_courses(update: Update, context: CallbackContext):
 dispatcher.add_handler(CommandHandler('start', start))
 dispatcher.add_handler(CommandHandler('help', rules))
 dispatcher.add_handler(MessageHandler(
-    Filters.regex('^(Python разработчик|Таргетолог|UI/UX designer)$'),
+    Filters.regex('^(Python разработчик|Data Scientist)$'),
     ask_salary
 ))
 dispatcher.add_handler(MessageHandler(
-    Filters.regex('^(0-50|50-100|100-130|130-160|Больше 160|Python|SQL|Web)$'),
+    Filters.regex('^(0-50|50-100|100-130|130-160|Больше 160|Ничего вам не скажу|Git|SQL|Python|Data Analysis)$'),
     choose_perfect_skills,
 ))
 dispatcher.add_handler(MessageHandler(
-    Filters.regex('^(Перейти к выбору навыков, которые хочется подтянуть|CI/CD|Golang|Tests)$'),
+    Filters.regex('^(Перейти к выбору навыков, которые хочется подтянуть|Web|Algorithms|ML|Docker|)$'),
     choose_middle_skills,
 ))
 dispatcher.add_handler(MessageHandler(
-    Filters.regex('^(Перейти к выбору навыков, которые хочется изучить|Algorithms|Docker|Asyncio)$'),
+    Filters.regex('^(Перейти к выбору навыков, которые хочется изучить|CI/CD|Testing|Golang|Asyncio)$'),
     choose_weak_skills,
 ))
 dispatcher.add_handler(MessageHandler(

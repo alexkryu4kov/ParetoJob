@@ -10,7 +10,7 @@ skills = frozenset((
     'Web',
     'CI/CD',
     'Golang',
-    'Tests',
+    'Testing',
     'Algorithms',
     'Docker',
     'Asyncio',
@@ -31,7 +31,7 @@ courses = {
              'https://www.oreilly.com/library/view/effective-devops/9781491926291/\n',
     'Golang': 'https://stepik.org/course/54403/promo\n'
               'https://www.coursera.org/specializations/google-golang\n',
-    'Tests': 'https://netology.ru/programs/qa\n'
+    'Testing': 'https://netology.ru/programs/qa\n'
              'https://stepik.org/course/575/promo\n',
     'Algorithms': 'https://stepik.org/course/217/promo\n'
                   'https://www.coursera.org/learn/algorithms-part1\n'
@@ -39,7 +39,7 @@ courses = {
                   'https://www.labirint.ru/books/671295/\n',
 }
 
-default_skills = defaultdict(int, {k: 2 for k in skills})
+default_skills = defaultdict(int, {k: 0 for k in skills})
 
 
 @dataclass
