@@ -1,14 +1,20 @@
+from copy import deepcopy
+
 from telegram.ext.callbackcontext import CallbackContext
 from telegram.replykeyboardmarkup import ReplyKeyboardMarkup
 from telegram.update import Update
 
 from algorithm.optimization import get_skill_difference, scalar_optimize
 from algorithm.transformer import Transformer
+from descriptions import default_skills, PersonDescription
 from users import users
 from vacancies import real_vacancies
 
 
 def make_recommendation(update: Update, context: CallbackContext):
+
+    if update.message.chat_id not in users:
+        users[update.message.chat_id] = PersonDescription(skills=deepcopy(default_skills))
     transformer = Transformer()
 
     kbd_layout = [['А как мне его подтянуть']]

@@ -10,6 +10,8 @@ from consts import (
     PERFECT_KBD_LAYOUT,
     WEAK_KBD_LAYOUT,
 )
+from copy import deepcopy
+from descriptions import default_skills, PersonDescription
 from users import users
 
 
@@ -18,6 +20,8 @@ def random_greeting():
 
 
 def choose_perfect_skills(update: Update, context: CallbackContext):
+    if update.message.chat_id not in users:
+        users[update.message.chat_id] = PersonDescription(skills=deepcopy(default_skills))
     kbd = ReplyKeyboardMarkup(PERFECT_KBD_LAYOUT, resize_keyboard=True)
     if update.message.text in ('Git', 'SQL', 'Python', 'Data Analysis'):
         users[update.message.chat_id].skills[update.message.text] = 5
@@ -39,6 +43,9 @@ def choose_perfect_skills(update: Update, context: CallbackContext):
 
 
 def choose_middle_skills(update: Update, context: CallbackContext):
+    if update.message.chat_id not in users:
+        users[update.message.chat_id] = PersonDescription(skills=deepcopy(default_skills))
+
     kbd = ReplyKeyboardMarkup(MIDDLE_KBD_LAYOUT, resize_keyboard=True)
     if update.message.text in ('Web', 'Algorithms', 'Machine Learning', 'Docker'):
         users[update.message.chat_id].skills[update.message.text] = 3
@@ -58,6 +65,8 @@ def choose_middle_skills(update: Update, context: CallbackContext):
 
 
 def choose_weak_skills(update: Update, context: CallbackContext):
+    if update.message.chat_id not in users:
+        users[update.message.chat_id] = PersonDescription(skills=deepcopy(default_skills))
     kbd = ReplyKeyboardMarkup(WEAK_KBD_LAYOUT, resize_keyboard=True)
     if update.message.text in ('CI/CD', 'Testing', 'Golang', 'Asyncio'):
         users[update.message.chat_id].skills[update.message.text] = 1
