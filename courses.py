@@ -20,7 +20,9 @@ courses = {
     'Web': 'https://www.coursera.org/learn/html-css-javascript-for-web-developers',
     'Docker': 'https://www.edx.org/course/introduction-to-containers-kubernetes-and-openshift',
     'Asyncio': 'https://www.datacamp.com/community/tutorials/asyncio-introduction',
-    'Machine Learning': 'https://mlcourse.ai/',
+    'Machine Learning': 'Для начала:\n https://mlcourse.ai/\n'
+                        'Потом можно перейти к \nhttps://netology.ru/programs/machine-learn\n'
+                        'Прекрасная книга:\nhttps://www.piter.com/collection/biblioteka-programmista/product/glubokoe-obuchenie-2',
     'Git': 'https://www.codecademy.com/learn/learn-git',
     'Data Analysis': 'https://www.udacity.com/course/data-analyst-nanodegree--nd002',
 }
