@@ -1,9 +1,9 @@
 from copy import deepcopy
-from typing import List
+from typing import List, Tuple
 
 from numpy import exp, log
 
-from descriptions import default_skills, VacancyDescription
+from descriptions import default_skills, PersonDescription, VacancyDescription
 
 
 def sigmoid(z, bias):
@@ -29,3 +29,11 @@ def scalar_optimize(vacancies_info: List[VacancyDescription], person_vector: lis
             best_metric = current_metric
             best_vacancy = vacancy
     return best_vacancy
+
+
+def get_skill_difference(person: PersonDescription, perfect_vacancy: VacancyDescription) -> Tuple[str, int]:
+    difference = {}
+    for key, elem in person.skills.items():
+        difference[key] = perfect_vacancy.skills[key] - elem
+    max_difference = max(difference, key=difference.get)
+    return max_difference, difference[max_difference]

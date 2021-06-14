@@ -13,8 +13,7 @@ from telegram.replykeyboardremove import ReplyKeyboardRemove
 from telegram.update import Update
 
 from descriptions import courses, default_skills, PersonDescription
-from optimization import scalar_optimize
-from perfect_vacancy import get_skill_difference
+from optimization import get_skill_difference, scalar_optimize
 from transformer import Transformer
 from vacancies import real_vacancies
 
